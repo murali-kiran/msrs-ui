@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html ng-app="msrsApp">
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>
+<script src="js/app.js"></script>
+<script src="js/home.controller.js"></script>
+<script src="js/empView.Controller.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>        
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+
+</head>
+
+<body>
+
+<div class="container">
+    
+	<div ng-controller="msrsHomeController as c">
+		
+		<div ng-show="c.currentView == 'home'">
+			<div class="row">
+			<table class="table ">
+				<tr class="col-sm-8"><td><h4>Search Employee</h4></td></tr>
+				<tr class="col-sm-8"><td>Emp Id</td>	<td><input type="text" ng-model="c.search.empid" /></td>  <td>DOB</td>	<td><input type="text" ng-model="search.dob" /></td></tr>
+				<tr class="col-sm-8"><td>First Name</td>	<td><input type="text" ng-model="c.search.firstname" /></td> <td>Phone</td>	<td><input type="text" ng-model="search.phone" /></td></tr>
+				<tr class="col-sm-8"><td>Last Name</td>	<td><input type="text" ng-model="c.search.lastname" /></td><td>E mail</td>	<td><input type="text" ng-model="search.email" /></td></tr>								
+				<tr class="col-sm-8"> <td><button ng-click="c.myFunction()">Search</button></td></tr>
+			</table>
+            </div>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						
+						<th><a href="" ng-click="c.order('empid')">Emp ID </a></th>
+						<th><a href="" ng-click="c.order('firstname')"> First Name</a>
+						</th>
+						<th><a href="" ng-click="c.order('lastname')">Last Name</a></th>
+						<th><a href="" ng-click="c.order('dob')">DOB</a></th>
+						<th><a href="" ng-click="c.order('phone')">Phone</a></th>
+						<th><a href="" ng-click="c.order('email')">Email</a></th>
+					</tr>
+					
+				</thead>
+				<tbody style="padding:0px;">
+
+					<tr	ng-repeat="emp in c.emps">
+						
+						<td style="padding:0px;">{{ emp.empid}}</td>
+						<td style="padding:0px;">{{ emp.firstname}}</td>
+						<td style="padding:0px;">{{ emp.lastname}}</td>
+						<td style="padding:0px;">{{ emp.dob}}</td>
+						<td style="padding:0px;">{{ emp.phone}}</td>
+						<td style="padding:0px;">{{ emp.email}}</td>
+						<td style="padding:0px;">
+							<button class="btn btn-default" ng-click="c.findById(emp.empid)">View</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+<!--
+			<h4 style="padding-left:100px;color:blue">{{c.view}} &nbsp;&nbsp;{{ c.selectedEmp.firstname}} &nbsp;&nbsp; {{c.detail}}</h4>
+			<table style="cell-padding:2; cell-spacing:2;width:100%;">
+			<tr><td style="width:48%;padding-left:100px;">
+			<table style="">
+			<tr><td>{{c.idlabel}}</td> <td>{{ c.selectedEmp.empid}}</td></tr>
+			<tr><td>{{c.fnamel}}</td><td>{{ c.selectedEmp.firstname}}</td></tr>
+			<tr><td>{{c.lnamel}}</td><td>{{ c.selectedEmp.lastname}}</td></tr>
+			</table>
+			</td>
+			<td style="width:48%;">
+			<table>
+			<tr><td>{{c.dobl}}</td> <td>{{  c.selectedEmp.dob}}</td></tr>
+			<tr><td>{{c.phonel}}</td><td>{{ c.selectedEmp.phone}}</td></tr>
+			<tr><td>{{c.emaill}}</td><td>{{ c.selectedEmp.email}}</td></tr>
+			</table>
+			</td>
+			</tr></table>
+
+  -->      
+		</div> <!-- end of home component -->
+	</div>	 <!-- end of msrsHomeController -->
+
+	<div ng-controller="empDetailsController as empDetails">
+		<div ng-show="empDetails.currentView == 'empView'">
+  <div class="row">
+      <button type="button" class="btn btn-default">Back</button>     
+  </div>
+	<form class="form-horizontal"> <!-- start employee details -->
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="fName">First Name:</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="fName" >
+      </div>
+    </div>
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="lName">Last Name:</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="lName" >
+      </div>
+    </div>
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="aadhar">Aadhar Number:</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="aadhar" >
+      </div>
+    </div>
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="email">Email:</label>
+      <div class="col-sm-6">
+        <input type="email" class="form-control" id="aadhar" >
+      </div>
+    </div>
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="panCard">Pan card:</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="panCard" >
+      </div>
+    </div>
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="phNo">Phone no:</label>
+      <div class="col-sm-6">
+        <input type="tel" class="form-control" id="phNo" >
+      </div>
+    </div>
+
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="address1">Address1:</label>
+      <div class="col-sm-6">
+        <input type="textarea" class="form-control" id="address1" >
+      </div>
+    </div>
+
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="address2">Address2:</label>
+      <div class="col-sm-6">
+        <input type="textarea" class="form-control" id="address2" >
+      </div>
+    </div>
+
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="dob">Dob:</label>
+      <div class="col-sm-6">
+        <input type="date" class="form-control" id="dob" >
+      </div>
+    </div>
+
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="doj">Doj:</label>
+      <div class="col-sm-6">
+        <input type="date" class="form-control" id="doj" >
+      </div>
+    </div>
+
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="Dor">Dor:</label>
+      <div class="col-sm-6">
+        <input type="date" class="form-control" id="Dor" >
+      </div>
+    </div>
+
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="district">District:</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="district" >
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="state">State:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="state" >
+      </div>
+    </div>
+
+	<div class="form-group">
+      <label class="control-label col-sm-2" for="pincode">Pincode:</label>
+      <div class="col-sm-6">          
+        <input type="pincode" class="form-control" id="pincode" >
+      </div>
+    </div>
+
+
+
+   
+	<!--  <div class="form-group">        
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-default">Submit</button>
+      </div>
+    </div> -->
+
+   </form> <!-- end employee details -->
+
+
+
+		</div>
+	</div> <!-- end of empDetailsController -->
+
+</div>
+
+</body>
+</html>
