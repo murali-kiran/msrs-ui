@@ -18,10 +18,16 @@
             console.log("empObj is : "+empObj.empId);
 
             return $http.get("http://localhost:8080/rest/getEmp?empid=" + empObj.empId).then(function (response) {                
-                self.selectedEmp = response.data;                
+                self.currentEmp = response.data;                
             }); 
 
         });
+
+
+        this.goBack = function (page) {
+            console.log("I am in gotBack : "+page);
+            globalInfo.currentViewComponent = page;                
+        }
 
         
 
