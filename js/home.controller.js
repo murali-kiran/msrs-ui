@@ -19,9 +19,7 @@
         this.findById = function (id) {
 
             // to invoke empview page
-            globalInfo.currentViewComponent = "empView";    
-
-            console.log("step1 : id : "+id);
+            globalInfo.currentViewComponent = "empView";                
             $rootScope.$emit('showEmp', {empId: id});  
             
         }
