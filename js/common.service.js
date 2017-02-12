@@ -1,3 +1,7 @@
+/**
+ * service layer have all common methods which 
+ * are usefull in all the controller
+ */
 (function(){
     var app = angular.module("msrsApp");
 
