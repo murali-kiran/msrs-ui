@@ -1,3 +1,6 @@
+/**
+ * this is the controller for home of thee application
+ */
 (function () {
 
     var app = angular.module("msrsApp");

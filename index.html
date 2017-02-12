@@ -6,6 +6,8 @@
 <script src="js/app.js"></script>
 <script src="js/home.controller.js"></script>
 <script src="js/empView.Controller.js"></script>
+<script src="js/emp.service.js"></script>
+<script src="js/common.service.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>        
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
@@ -63,26 +65,6 @@
 				</tbody>
 			</table>
 
-<!--
-			<h4 style="padding-left:100px;color:blue">{{c.view}} &nbsp;&nbsp;{{ c.selectedEmp.firstname}} &nbsp;&nbsp; {{c.detail}}</h4>
-			<table style="cell-padding:2; cell-spacing:2;width:100%;">
-			<tr><td style="width:48%;padding-left:100px;">
-			<table style="">
-			<tr><td>{{c.idlabel}}</td> <td>{{ c.selectedEmp.empid}}</td></tr>
-			<tr><td>{{c.fnamel}}</td><td>{{ c.selectedEmp.firstname}}</td></tr>
-			<tr><td>{{c.lnamel}}</td><td>{{ c.selectedEmp.lastname}}</td></tr>
-			</table>
-			</td>
-			<td style="width:48%;">
-			<table>
-			<tr><td>{{c.dobl}}</td> <td>{{  c.selectedEmp.dob}}</td></tr>
-			<tr><td>{{c.phonel}}</td><td>{{ c.selectedEmp.phone}}</td></tr>
-			<tr><td>{{c.emaill}}</td><td>{{ c.selectedEmp.email}}</td></tr>
-			</table>
-			</td>
-			</tr></table>
-
-  -->      
 		</div> <!-- end of home component -->
 	</div>	 <!-- end of msrsHomeController -->
 
@@ -145,7 +127,7 @@
 	<div class="form-group">
       <label class="control-label col-sm-2" for="dob">Dob:</label>
       <div class="col-sm-4">
-        <input type="date" class="form-control" id="dob" ng-model="empDetails.currentEmp.dob">
+        <input type="date" class="form-control" id="dob" ng-model="empDetails.currentEmp.dob" >
       </div>
    
       <label class="control-label col-sm-2" for="doj">Doj:</label>
@@ -178,49 +160,168 @@
       </div>
     </div>
 
+    <div class="row">&nbsp;</div>
+    
+    <!-- div is to show new Incedent form -->
+    <div class=" row clearfix" ng-if="empDetails.showAddIncidentForm">
+
+      <div class="panel panel-info" >
+      <div class="panel-heading">Add Incedent</div>
+      <div class="panel-body">
+        <form class="form-horizontal">    <!-- Start of create new incedent -->
+          <div class="form-group">
+              <label class="control-label col-sm-2" >Details:</label>
+              <div class="col-sm-2">          
+                <input type="text" class="form-control" id="incidentDetails" ng-model="newIncDetails">
+              </div>
+
+              <label class="control-label col-sm-2" >First day of incident:</label>
+              <div class="col-sm-2">          
+                <input type="Date" class="form-control" id="state" ng-model="newIncFirstDay">
+              </div>
+          </div>
+
+          <div class="form-group">
+
+              <div class="col-sm-offset-2 col-sm-2">
+                <div class="checkbox">
+                  <label class="control-label"><input type="checkbox" />Is home visit required:</label>
+                </div>
+              </div>
+              <label class="control-label col-sm-2" >Benefit Type:</label>
+              <div class="col-sm-2">                          
+                <select ng-model="selectedBenefittype" 
+                ng-options="benefit.benefittype for benefit in empDetails.empBenefitTypes track by benefit.benefittypeid">                 
+                </select>
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label class="control-label col-sm-2" >Office Location 1:</label>
+              <div class="col-sm-2">          
+                <input type="text" class="form-control" ng-model="newIncOfficeLoc1">
+              </div>
+
+              <label class="control-label col-sm-2" >Office Location 2:</label>
+              <div class="col-sm-2">          
+                <input type="text" class="form-control" ng-model="newIncOfficeLoc2">
+              </div>
+          </div>
+
+          <div class="form-group">
+              <span class="col-sm-1"></span>
+              <button class="btn btn-primary col-sm-1" ng-click="empDetails.saveIncident(empDetails.currentEmp.empid)">Save</button>
+              <span class="col-sm-1"></span>
+              <button class="btn btn-primary col-sm-1" ng-click="empDetails.showIncidentForm(false)">Cancel</button>              
+          </div>
+
+        </form>  <!-- End of create new incedent -->
+        </div>
+        </div>
+      </div>  <!-- End of new incedent div -->
    
-    <div class="form-group col-sm-8">
-      <div><h5>Incidents : </h5></div>
+    <div class="form-group col-sm-10">   <!-- Start of incident table div -->
+
+      <!-- Building incidense grid -->
+      <div class="row"><label class="control-label">Incidents : </label></div>
        <table class="table table-striped table-bordered table-condensed">
 				<thead>
 					<tr>
+            <th>Serial No</th>
 						<th>Details</th>
 						<th>First day of incident</th>
 						<th>Is home visitrequired</th>
 						<th>Office 1</th>
-						<th>Office 2 </th>
+						<th>Office 2</th>
             <th>Benefit Type </th>
+            <th>    </th>
 					</tr>					
 				</thead>
 				<tbody >
+					<tr	ng-repeat="inc in empDetails.currentEmp.incidents">
+            <td>{{ $index }}</td>
+						<td>
+              <span ng-show="inc.edit == undefined || inc.edit == false">{{ inc.details}}</span>
+              <input ng-show="inc.edit == true" type="text" class="form-control" ng-model="inc.details"/>
+            </td>
+						<td>
+              <!--<span ng-show="inc.edit == undefined || inc.edit == false">{{ inc.firstdayofincident}}</span> -->
+              <input ng-show="inc.edit == undefined || inc.edit == false" disabled type="date" class="form-control" ng-model="inc.firstdayofincident"/>
+              <input ng-show="inc.edit == true" type="date" class="form-control" ng-model="inc.firstdayofincident"/>
+            </td>
+						<td>              
+              <input ng-show="inc.edit == undefined || inc.edit == false" disabled type="checkbox" class="form-control"  ng-checked="inc.ishomevisitrequired == 1" ng-model="inc.ishomevisitrequired"/>
+              <input ng-show="inc.edit == true" type="checkbox" class="form-control"  ng-checked="inc.ishomevisitrequired == 1" ng-model="inc.ishomevisitrequired"/>
+            </td>
+						<td>
+              <span ng-show="inc.edit == undefined || inc.edit == false">{{ inc.officeLocation1.officelocation}}</span>
+              <input ng-show="inc.edit == true" type="text" class="form-control" ng-model="inc.officeLocation1.officelocation"/>
+            </td>
+						<td>
+              <span ng-show="inc.edit == undefined || inc.edit == false">{{ inc.officeLocation2.officelocation}}</span>
+              <input ng-show="inc.edit == true" type="text" class="form-control" ng-model="inc.officeLocation2.officelocation"/>
+            </td>
+            <td>
+              <span ng-show="inc.edit == undefined || inc.edit == false">{{ inc.benefitType.benefittype}}</span>              
+              <select ng-show="inc.edit == true" ng-model="inc.benefitType" 
+                ng-options="benefit.benefittype for benefit in empDetails.empBenefitTypes track by benefit.benefittypeid">                 
+              </select>
+            </td>
+						<td>
+							<button ng-show="inc.edit == undefined || inc.edit == false" class="btn btn-link" ng-click="empDetails.editIncidentOfEmp(inc,'edit')">Edit</button>
 
-					<tr	ng-repeat="inc in empDetails.incidents">
-						
-						<td style="padding:0px;">{{ inc.details}}</td>
-						<td style="padding:0px;">{{ inc.firstdayofincident}}</td>
-						<td style="padding:0px;">{{ inc.ishomevisitrequired}}</td>
-						<td style="padding:0px;">{{ inc.officeLocation1}}</td>
-						<td style="padding:0px;">{{ inc.officeLocation2}}</td>
-            <td style="padding:0px;">todo</td>
-						<td style="padding:0px;">
-							<button class="btn btn-default" ng-click="empDetails.editIncidentOfEmp(inc.empid ,inc.incidentid)">Edit</button>
+              <button ng-show="inc.edit == true" class="btn btn-link" ng-click="empDetails.editIncidentOfEmp(inc ,'save')">Save</button>             
+              <button ng-show="inc.edit == true" class="btn btn-link" ng-click="empDetails.editIncidentOfEmp(inc,'cancel')">Cancel</button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 
+    </div> <!-- End of incident table div -->
+    
+    <div class="col-sm-2">
+
+
+
+      <!-- 
+
+         {
+      "incidentid": 1,
+      "createdtime": 1486751400000,
+      "details": "head ache",
+      "empid": 1,
+      "firstdayofincident": "2016-12-12",
+      "ishomevisitrequired": 1,
+      "modifiedtime": 1486751400000,
+      "benefitType": {
+        "benefittypeid": 1,
+        "benefittype": "Fever",
+        "createdtime": 1486303194000,
+        "modifiedtime": 1486303194000
+      },
+      "officeLocation1": {
+        "officelocationid": 1,
+        "createdtime": 1486303133000,
+        "modifiedtime": 1486303133000,
+        "officelocation": "mehdipatnam"
+      },
+      "officeLocation2": {
+        "officelocationid": 2,
+        "createdtime": 1486303144000,
+        "modifiedtime": 1486303144000,
+        "officelocation": "hitechcity"
+      }
+    }
+
+
+
+      -->
+      <span ng-if="!empDetails.showAddIncidentForm"> <button class="btn btn-primary"  ng-click="empDetails.showIncidentForm(true)" >Add incident</button> </span>
+
     </div>
-
-   
-	<!--  <div class="form-group">        
-      <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-default">Submit</button>
-      </div>
-    </div> -->
-
    </form> <!-- end employee details -->
-
 		</div>
+   
 	</div> <!-- end of empDetailsController -->
 
 </div>
