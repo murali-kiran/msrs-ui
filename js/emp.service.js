@@ -18,7 +18,7 @@
             return promise2;
         }
 
-        self.saveIncident = function(incident){
+        self.saveIncident = function(incident) {
             var promise1 = $http.post("http://localhost:8080/rest/createIncident",incident);
             var promise2 = promise1.then(function (response) { 
                 console.log(response.data);

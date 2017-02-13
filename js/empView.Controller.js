@@ -84,7 +84,7 @@
                 }
             }else if(editStatus == "save"){
                 
-                EmpService.saveIncident(incident).then(function(response){
+                EmpService.saveIncident(incident).then(function(response) {
                     console.log("In Emp controller update incident : "+response);
                 });
 
