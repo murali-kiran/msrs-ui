@@ -76,7 +76,7 @@
 
                 angular.copy(incident, _temp);
 
-                if(self.empBenefitTypes == null || self.empBenefitTypes.length == 0) {
+                if(self.empBenefitTypes == null || self.empBenefitTypes.length == 0){
                     CommonService.getAllBenefitType().then(function(response){
                     self.empBenefitTypes = response;  
                         console.log("all benefits : "+self.empBenefitTypes.length);                               
