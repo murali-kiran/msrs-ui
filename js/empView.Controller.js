@@ -61,8 +61,10 @@
         /**
          * save the newly created incident of employee
          */
-        this.saveIncident = function(empId){
-
+        this.saveIncident = function(incident){
+            EmpService.saveIncident(incident).then(function(response){
+                console.log("in"+response);
+            });
         }
 
         /**
@@ -74,16 +76,20 @@
 
                 angular.copy(incident, _temp);
 
-                if(self.empBenefitTypes == null || self.empBenefitTypes.length == 0) {
+                if(self.empBenefitTypes == null || self.empBenefitTypes.length == 0){
                     CommonService.getAllBenefitType().then(function(response){
                     self.empBenefitTypes = response;  
                         console.log("all benefits : "+self.empBenefitTypes.length);                               
                     });
                 }
-
-
             }else if(editStatus == "save"){
+                
+                EmpService.saveIncident(incident).then(function(response) {
+                    console.log("In Emp controller update incident : "+response);
+                });
+
                 incident.edit=false;
+                _temp = {};
             }else if(editStatus == "cancel"){                                
                 angular.copy(_temp,incident);
                 incident.edit=false;
