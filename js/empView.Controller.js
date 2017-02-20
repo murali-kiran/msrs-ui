@@ -133,21 +133,25 @@
         this.editIncidentOfEmp = function(incident,editStatus){
             if(editStatus == "edit"){
                 incident.edit=true;
-
-                angular.copy(incident, _temp);
-                _fetchAllOfficeLocationsAndBenefitType();
-
-            }else if(editStatus == "save"){
-                
+                _fetchAllOfficeLocationsAndBenefitType(); 
+            }else if(editStatus == "save"){                
                 EmpService.saveIncident(incident).then(function(response) {                    
                 });
+                incident.edit=false;
+            }else if(editStatus == "cancel"){   
+                incident.edit=false;
+            }
+        }  
 
-                incident.edit=false;
-                _temp = {};
-            }else if(editStatus == "cancel"){                                
-                angular.copy(_temp,incident);
-                incident.edit=false;
-                _temp = {};
+        this.editNomineeOfEmp = function(nominee,editStatus){
+            if(editStatus == "edit"){
+                nominee.edit=true;                
+            }else if(editStatus == "save"){                
+                EmpService.saveNominee(nominee).then(function(response) {                    
+                });
+                nominee.edit=false;
+            }else if(editStatus == "cancel"){   
+                nominee.edit=false;
             }
         }  
 

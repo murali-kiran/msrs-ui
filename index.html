@@ -328,6 +328,73 @@
       <span ng-if="!empDetails.showAddIncidentForm"> <button class="btn btn-primary"  ng-click="empDetails.showIncidentForm(true,empDetails.currentEmp.empid)" >Add incident</button> </span>
 
     </div>
+    <div class="row"> <!-- Start of nominees div -->
+
+      <div class="form-group col-sm-10">
+
+      <!-- Building incidense grid which includes edit incidents -->
+      <div class="row"><label class="control-label">Nominees : </label></div>
+       <table class="table table-striped table-bordered table-condensed">
+				<thead>
+					<tr>
+            <th>Name</th>
+						<th>Relationship</th>
+						<th>Address1</th>
+						<th>Address2</th>
+						<th>Age</th>
+						<th>Pincode</th>
+            <th>State </th>
+            <th>District </th>
+            <th>    </th>
+					</tr>					
+				</thead>
+				<tbody >
+					<tr	ng-repeat="nominee in empDetails.currentEmp.nominees">
+            <td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false">{{ nominee.name }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.name"/>
+            </td>            
+						<td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false">{{ nominee.relationship }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.relationship"/>
+            </td>
+						<td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.address1 }}</span>
+              <input ng-show="nominee.edit == true" type="textarea" class="form-control" ng-model="nominee.address1"/>
+            </td>
+						<td>              
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.address2 }}</span>
+              <input ng-show="nominee.edit == true" type="textarea" class="form-control" ng-model="nominee.address2"/>
+            </td>
+						<td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.age }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.age"/>
+            </td>
+						<td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.pincode }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.pincode"/>
+            </td>
+            <td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.district }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.district"/>
+            </td>
+            <td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.state }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.state"/>
+            </td>
+						<td>
+							<button ng-show="nominee.edit == undefined || nominee.edit == false" class="btn btn-link" ng-click="empDetails.editNomineeOfEmp(nominee,'edit')">Edit</button>
+
+              <button ng-show="nominee.edit == true" class="btn btn-link" ng-click="empDetails.editNomineeOfEmp(nominee ,'save')">Save</button>             
+              <button ng-show="nominee.edit == true" class="btn btn-link" ng-click="empDetails.editNomineeOfEmp(nominee,'cancel')">Cancel</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+    </div> 
+
+    </div>  <!-- End of nominees div -->
    </form> <!-- end employee details -->
 		</div>
    
