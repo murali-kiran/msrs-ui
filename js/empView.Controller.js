@@ -45,26 +45,86 @@
         /**
          *  show add incident form 
          * */
-        this.showIncidentForm = function (status){
+        this.showIncidentForm = function (status,empId){
             this.showAddIncidentForm = status;
 
-            console.log("all benefits : "+(status == true));                               
+            if(status){
 
-            if(status && (self.empBenefitTypes == null || self.empBenefitTypes.length == 0)) {
-                CommonService.getAllBenefitType().then(function(response){
-                self.empBenefitTypes = response;  
-                    console.log("all benefits : "+self.empBenefitTypes.length);                               
-                });
+                var newIncident = 
+                {                      
+                    details: "",
+                    empid: empId,
+                    firstdayofincident: new Date(),
+                    ishomevisitrequired: 0,                
+                
+                    benefitType: {
+                        benefittypeid: 1,
+                    },
+                    officeLocation1: {
+                        officelocationid: 1,
+                    },
+                    officeLocation2: {
+                        officelocationid: 1,
+                    }
+                };
+
+            self.newIncidentModel = newIncident;
+
+            _fetchAllOfficeLocationsAndBenefitType();
             }
-        }
+            else{
+                self.newIncidentModel= {};
+            }
+
+    /*
+    {
+      "incidentid": 1,
+      "createdtime": 1486751400000,
+      "details": "head ache",
+      "empid": 1,
+      "firstdayofincident": "2016-12-12",
+      "ishomevisitrequired": 1,
+      "modifiedtime": 1486751400000,
+      "benefitType": {
+        "benefittypeid": 1,
+        "benefittype": "Fever",
+        "createdtime": 1486303194000,
+        "modifiedtime": 1486303194000
+      },
+      "officeLocation1": {
+        "officelocationid": 1,
+        "createdtime": 1486303133000,
+        "modifiedtime": 1486303133000,
+        "officelocation": "mehdipatnam"
+      },
+      "officeLocation2": {
+        "officelocationid": 2,
+        "createdtime": 1486303144000,
+        "modifiedtime": 1486303144000,
+        "officelocation": "hitechcity"
+      }
+    }
+    
+    */
+
+    }
 
         /**
          * save the newly created incident of employee
          */
         this.saveIncident = function(incident){
+            
+            incident.ishomevisitrequired = incident.ishomevisitrequired ? 1 : 0 ;
+            incident.createdtime = new Date();
             EmpService.saveIncident(incident).then(function(response){
-                console.log("in"+response);
+                self.showIncidentForm(false);
+
+            EmpService.getEmpById(incident.empid).then(function(response){
+                self.currentEmp = response;                                  
             });
+
+            });
+
         }
 
         /**
@@ -73,28 +133,52 @@
         this.editIncidentOfEmp = function(incident,editStatus){
             if(editStatus == "edit"){
                 incident.edit=true;
+                _fetchAllOfficeLocationsAndBenefitType(); 
+            }else if(editStatus == "save"){                
+                EmpService.saveIncident(incident).then(function(response) {                    
+                });
+                incident.edit=false;
+            }else if(editStatus == "cancel"){   
+                incident.edit=false;
+            }
+        }  
 
-                angular.copy(incident, _temp);
+        this.editNomineeOfEmp = function(nominee,editStatus){
+            if(editStatus == "edit"){
+                nominee.edit=true;                
+            }else if(editStatus == "save"){                
+                EmpService.saveNominee(nominee).then(function(response) {                    
+                });
+                nominee.edit=false;
+            }else if(editStatus == "cancel"){   
+                nominee.edit=false;
+            }
+        }  
+
+        /**
+         * private method to fetch all office locations and
+         * benefits
+         */
+        _fetchAllOfficeLocationsAndBenefitType = function ()      {
 
                 if(self.empBenefitTypes == null || self.empBenefitTypes.length == 0){
                     CommonService.getAllBenefitType().then(function(response){
                     self.empBenefitTypes = response;  
-                        console.log("all benefits : "+self.empBenefitTypes.length);                               
                     });
                 }
-            }else if(editStatus == "save"){
-                
-                EmpService.saveIncident(incident).then(function(response) {
-                    console.log("In Emp controller update incident : "+response);
-                });
 
-                incident.edit=false;
-                _temp = {};
-            }else if(editStatus == "cancel"){                                
-                angular.copy(_temp,incident);
-                incident.edit=false;
-                _temp = {};
-            }
-        }        
+                if(self.empOffice1_Locs == null || self.empOffice1_Locs.length == 0){
+                    CommonService.getAllOffice_Locs().then(function(response){
+                    self.empOffice1_Locs = response;  
+                    });
+                }
+
+                if(self.empOffice2_Locs == null || self.empOffice2_Locs.length == 0){
+                    CommonService.getAllOffice_Locs().then(function(response){
+                    self.empOffice2_Locs = response;  
+                    });
+                }
+
+        }
     }
 })();

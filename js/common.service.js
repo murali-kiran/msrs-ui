@@ -14,5 +14,11 @@
             }); 
         }
 
+        self.getAllOffice_Locs = function(){
+            return $http.get("http://localhost:8080/rest/getAllOfficeLocation").then(function (response) {                
+                return response.data;                  
+            });
+        }
+
     });
 })();

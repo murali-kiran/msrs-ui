@@ -172,12 +172,12 @@
           <div class="form-group">
               <label class="control-label col-sm-2" >Details:</label>
               <div class="col-sm-2">          
-                <input type="text" class="form-control" id="incidentDetails" ng-model="newIncDetails">
+                <input type="text" class="form-control" id="incidentDetails" ng-model="empDetails.newIncidentModel.details">
               </div>
 
               <label class="control-label col-sm-2" >First day of incident:</label>
               <div class="col-sm-2">          
-                <input type="Date" class="form-control" id="state" ng-model="newIncFirstDay">
+                <input type="date" class="form-control" id="state" ng-model="empDetails.newIncidentModel.firstdayofincident">
               </div>
           </div>
 
@@ -185,12 +185,14 @@
 
               <div class="col-sm-offset-2 col-sm-2">
                 <div class="checkbox">
-                  <label class="control-label"><input type="checkbox" />Is home visit required:</label>
+                  <label class="control-label">
+                    <input type="checkbox" ng-model="empDetails.newIncidentModel.ishomevisitrequired" ng-checked="empDetails.newIncidentModel.ishomevisitrequired == 1" />
+                    Is home visit required:</label>
                 </div>
               </div>
               <label class="control-label col-sm-2" >Benefit Type:</label>
               <div class="col-sm-2">                          
-                <select ng-model="selectedBenefittype" 
+                <select ng-model="empDetails.newIncidentModel.benefitType" 
                 ng-options="benefit.benefittype for benefit in empDetails.empBenefitTypes track by benefit.benefittypeid">                 
                 </select>
               </div>
@@ -199,18 +201,22 @@
           <div class="form-group">
               <label class="control-label col-sm-2" >Office Location 1:</label>
               <div class="col-sm-2">          
-                <input type="text" class="form-control" ng-model="newIncOfficeLoc1">
+                <select ng-model="empDetails.newIncidentModel.officeLocation1" 
+                  ng-options="office1.officelocation for office1 in empDetails.empOffice1_Locs track by office1.officelocationid">                 
+                </select>
               </div>
 
               <label class="control-label col-sm-2" >Office Location 2:</label>
               <div class="col-sm-2">          
-                <input type="text" class="form-control" ng-model="newIncOfficeLoc2">
+                <select ng-model="empDetails.newIncidentModel.officeLocation2" 
+                  ng-options="office2.officelocation for office2 in empDetails.empOffice2_Locs track by office2.officelocationid">                 
+                </select>
               </div>
           </div>
 
           <div class="form-group">
               <span class="col-sm-1"></span>
-              <button class="btn btn-primary col-sm-1" ng-click="empDetails.saveIncident(empDetails.currentEmp.empid)">Save</button>
+              <button class="btn btn-primary col-sm-1" ng-click="empDetails.saveIncident(empDetails.newIncidentModel)">Save</button>
               <span class="col-sm-1"></span>
               <button class="btn btn-primary col-sm-1" ng-click="empDetails.showIncidentForm(false)">Cancel</button>              
           </div>
@@ -222,7 +228,7 @@
    
     <div class="form-group col-sm-10">   <!-- Start of incident table div -->
 
-      <!-- Building incidense grid -->
+      <!-- Building incidense grid which includes edit incidents -->
       <div class="row"><label class="control-label">Incidents : </label></div>
        <table class="table table-striped table-bordered table-condensed">
 				<thead>
@@ -245,7 +251,6 @@
               <input ng-show="inc.edit == true" type="text" class="form-control" ng-model="inc.details"/>
             </td>
 						<td>
-              <!--<span ng-show="inc.edit == undefined || inc.edit == false">{{ inc.firstdayofincident}}</span> -->
               <input ng-show="inc.edit == undefined || inc.edit == false" disabled type="date" class="form-control" ng-model="inc.firstdayofincident"/>
               <input ng-show="inc.edit == true" type="date" class="form-control" ng-model="inc.firstdayofincident"/>
             </td>
@@ -255,11 +260,15 @@
             </td>
 						<td>
               <span ng-show="inc.edit == undefined || inc.edit == false">{{ inc.officeLocation1.officelocation}}</span>
-              <input ng-show="inc.edit == true" type="text" class="form-control" ng-model="inc.officeLocation1.officelocation"/>
+              <select ng-show="inc.edit == true" ng-model="inc.officeLocation1" 
+                ng-options="office1.officelocation for office1 in empDetails.empOffice1_Locs track by office1.officelocationid">                 
+              </select>
             </td>
 						<td>
               <span ng-show="inc.edit == undefined || inc.edit == false">{{ inc.officeLocation2.officelocation}}</span>
-              <input ng-show="inc.edit == true" type="text" class="form-control" ng-model="inc.officeLocation2.officelocation"/>
+              <select ng-show="inc.edit == true" ng-model="inc.officeLocation2" 
+                ng-options="office2.officelocation for office2 in empDetails.empOffice2_Locs track by office2.officelocationid">                 
+              </select>
             </td>
             <td>
               <span ng-show="inc.edit == undefined || inc.edit == false">{{ inc.benefitType.benefittype}}</span>              
@@ -285,7 +294,7 @@
 
       <!-- 
 
-         {
+    {
       "incidentid": 1,
       "createdtime": 1486751400000,
       "details": "head ache",
@@ -316,9 +325,76 @@
 
 
       -->
-      <span ng-if="!empDetails.showAddIncidentForm"> <button class="btn btn-primary"  ng-click="empDetails.showIncidentForm(true)" >Add incident</button> </span>
+      <span ng-if="!empDetails.showAddIncidentForm"> <button class="btn btn-primary"  ng-click="empDetails.showIncidentForm(true,empDetails.currentEmp.empid)" >Add incident</button> </span>
 
     </div>
+    <div class="row"> <!-- Start of nominees div -->
+
+      <div class="form-group col-sm-10">
+
+      <!-- Building incidense grid which includes edit incidents -->
+      <div class="row"><label class="control-label">Nominees : </label></div>
+       <table class="table table-striped table-bordered table-condensed">
+				<thead>
+					<tr>
+            <th>Name</th>
+						<th>Relationship</th>
+						<th>Address1</th>
+						<th>Address2</th>
+						<th>Age</th>
+						<th>Pincode</th>
+            <th>State </th>
+            <th>District </th>
+            <th>    </th>
+					</tr>					
+				</thead>
+				<tbody >
+					<tr	ng-repeat="nominee in empDetails.currentEmp.nominees">
+            <td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false">{{ nominee.name }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.name"/>
+            </td>            
+						<td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false">{{ nominee.relationship }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.relationship"/>
+            </td>
+						<td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.address1 }}</span>
+              <input ng-show="nominee.edit == true" type="textarea" class="form-control" ng-model="nominee.address1"/>
+            </td>
+						<td>              
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.address2 }}</span>
+              <input ng-show="nominee.edit == true" type="textarea" class="form-control" ng-model="nominee.address2"/>
+            </td>
+						<td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.age }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.age"/>
+            </td>
+						<td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.pincode }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.pincode"/>
+            </td>
+            <td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.district }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.district"/>
+            </td>
+            <td>
+              <span ng-show="nominee.edit == undefined || nominee.edit == false" >{{ nominee.state }}</span>
+              <input ng-show="nominee.edit == true" type="text" class="form-control" ng-model="nominee.state"/>
+            </td>
+						<td>
+							<button ng-show="nominee.edit == undefined || nominee.edit == false" class="btn btn-link" ng-click="empDetails.editNomineeOfEmp(nominee,'edit')">Edit</button>
+
+              <button ng-show="nominee.edit == true" class="btn btn-link" ng-click="empDetails.editNomineeOfEmp(nominee ,'save')">Save</button>             
+              <button ng-show="nominee.edit == true" class="btn btn-link" ng-click="empDetails.editNomineeOfEmp(nominee,'cancel')">Cancel</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+    </div> 
+
+    </div>  <!-- End of nominees div -->
    </form> <!-- end employee details -->
 		</div>
    
