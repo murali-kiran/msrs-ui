@@ -1,5 +1,5 @@
 /**
- * this is the controller for home of thee application
+ * this is the controller for home of the application
  */
 (function () {
 
@@ -25,6 +25,12 @@
             globalInfo.currentViewComponent = "empView";                
             $rootScope.$emit('showEmp', {empId: id});  
             
+        }
+
+        this.showCreateEmp = function () {
+            // to invoke create emp view page
+            globalInfo.currentViewComponent = "createEmpView";                            
+            $rootScope.$emit('showCreateEmp');  
         }
 
         $scope.$watch(function(scope) { return globalInfo.currentViewComponent },

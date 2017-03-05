@@ -25,6 +25,11 @@
 	<div ng-controller="msrsHomeController as c">
 		
 		<div ng-show="c.currentView == 'home'">
+
+      <div class="row">
+        <button  class="btn btn-link" ng-click="c.showCreateEmp()">Create Employee</button>
+      </div>
+
 			<div class="row">
 			<table class="table ">
 				<tr class="col-sm-8"><td><h4>Search Employee</h4></td></tr>
@@ -290,41 +295,6 @@
     
     <div class="col-sm-2">
 
-
-
-      <!-- 
-
-    {
-      "incidentid": 1,
-      "createdtime": 1486751400000,
-      "details": "head ache",
-      "empid": 1,
-      "firstdayofincident": "2016-12-12",
-      "ishomevisitrequired": 1,
-      "modifiedtime": 1486751400000,
-      "benefitType": {
-        "benefittypeid": 1,
-        "benefittype": "Fever",
-        "createdtime": 1486303194000,
-        "modifiedtime": 1486303194000
-      },
-      "officeLocation1": {
-        "officelocationid": 1,
-        "createdtime": 1486303133000,
-        "modifiedtime": 1486303133000,
-        "officelocation": "mehdipatnam"
-      },
-      "officeLocation2": {
-        "officelocationid": 2,
-        "createdtime": 1486303144000,
-        "modifiedtime": 1486303144000,
-        "officelocation": "hitechcity"
-      }
-    }
-
-
-
-      -->
       <span ng-if="!empDetails.showAddIncidentForm"> <button class="btn btn-primary"  ng-click="empDetails.showIncidentForm(true,empDetails.currentEmp.empid)" >Add incident</button> </span>
 
     </div>
@@ -397,6 +367,156 @@
     </div>  <!-- End of nominees div -->
    </form> <!-- end employee details -->
 		</div>
+
+     <!-- Start of create employee -->
+    <div  ng-show="empDetails.currentView == 'createEmpView'">
+
+      <form class="form-horizontal">
+
+        <div class="form-group">
+        <label  class="col-sm-2 control-label">First Name</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control"  ng-model="empDetails.createEmpModel.firstname">
+        </div>
+        </div>
+
+        <div class="form-group">
+        <label  class="col-sm-2 control-label">Last Name</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="empDetails.createEmpModel.lastname">
+        </div>
+        </div>
+
+        <div class="form-group">
+        <label  class="col-sm-2 control-label">Gender</label>
+        <div class="col-sm-6">
+          <select class="form-control"  ng-model="empDetails.createEmpModel.gender">
+            <option value="0" >Male</option>
+            <option value="1">Female</option>
+          </select>
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label  class="col-sm-2 control-label">Dob</label>
+        <div class="col-sm-6">
+          <input type="date" class="form-control" ng-model="empDetails.createEmpModel.dob">
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label class="col-sm-2 control-label">Phone Number</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="empDetails.createEmpModel.phone">
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-6">
+          <input type="email" class="form-control" ng-model="empDetails.createEmpModel.email">
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label  class="col-sm-2 control-label">Aadhar</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="empDetails.createEmpModel.aatharnumber">
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label class="col-sm-2 control-label">Pan Card</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="empDetails.createEmpModel.pancard">
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label class="col-sm-2 control-label">Doj</label>
+        <div class="col-sm-6">
+          <input type="date" class="form-control" ng-model="empDetails.createEmpModel.doj">
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label class="col-sm-2 control-label">Dor</label>
+        <div class="col-sm-6">
+          <input type="date" class="form-control" ng-model="empDetails.createEmpModel.dor">
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label class="col-sm-2 control-label">Address</label>
+        <div class="col-sm-6">
+          <input type="textarea" class="form-control" ng-model="empDetails.createEmpModel.adress1">
+        </div>
+        </div>
+
+        <div class="form-group">
+        <label class="col-sm-2 control-label">Address</label>
+        <div class="col-sm-6">
+          <input type="textarea" class="form-control" ng-model="empDetails.createEmpModel.adress2">
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label class="col-sm-2 control-label">City</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="empDetails.createEmpModel.city">
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label class="col-sm-2 control-label">District</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="empDetails.createEmpModel.district">
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label class="col-sm-2 control-label">State</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="empDetails.createEmpModel.state">
+        </div>
+        </div>
+
+
+        <div class="form-group">
+        <label class="col-sm-2 control-label">Pincode</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="empDetails.createEmpModel.pincode">
+        </div>
+        </div>
+
+        <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-3">
+          <button type="submit" class="btn btn-default" ng-click="empDetails.saveEmp('save')">Save</button>
+        </div>
+        
+        <div class="col-sm-offset-2 col-sm-3">
+          <button type="submit" class="btn btn-default" ng-click="empDetails.saveEmp('reset')">Reset</button>
+        </div>
+       
+        <div class="col-sm-offset-2 col-sm-3">
+          <button type="submit" class="btn btn-default" ng-click="empDetails.saveEmp('cancel')">Cancel</button>
+        </div>
+        </div>
+
+      </form>
+        
+    </div> <!-- End of create employee -->
    
 	</div> <!-- end of empDetailsController -->
 
