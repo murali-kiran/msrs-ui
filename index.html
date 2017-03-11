@@ -8,6 +8,7 @@
 <script src="js/empView.Controller.js"></script>
 <script src="js/emp.service.js"></script>
 <script src="js/common.service.js"></script>
+<script src="js/leftNav.controller.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>        
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
@@ -15,31 +16,288 @@
         crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
         crossorigin="anonymous">
+<style>              
+       html,
+       body {
+          margin:0;
+          padding:0;
+          height:100%;
+        }
+        #container {
+          min-height:100%;
+          position:relative;
+        }
+        
+        #body {
+          padding-top:70px;
+          padding-bottom:45px;   /* Height of the footer */
+        }
+        footer {
+          position:fixed;
+          bottom:0;
+          width:100%;
+          height:30px;   /* Height of the footer */  
+          background-color:#000000;
+        }
+      .glyphicon { margin-right:10px; }
+      .panel-body { padding:0px; }
+      .panel-body table tr td { padding-left: 15px }
+      .panel-body .table {margin-bottom: 0px; }
+
+      .copyright { min-height:30px; background-color:#000000;}/* Height of the footer */  
+      .copyright p { text-align:left; color:#FFF; padding:8px 0; margin-bottom:0px;}
+      .bottom_ul { list-style-type:none; float:right; margin-bottom:0px;padding:8px 0;}
+      .bottom_ul li { float:left; line-height:8px;}
+      .bottom_ul li:after { content:"/"; color:#FFF; margin-right:8px; margin-left:8px;}
+      .bottom_ul li a { color:#FFF;  font-size:12px;}
+      
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
 </head>
 
-<body>
-
-<div class="container">
-    
+<body > 
+    <div id="container">
+      <header>
+        <!-- start of top nav-bar -->
+          <nav class="navbar navbar-inverse  navbar-fixed-top" >
+          <div class="container-fluid">
+          <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+            <img alt="MSRS" src="">
+          </a>      
+          </div>
+          <div class="navbar-right">
+            <button type="button" class="btn btn-primary btn-sm navbar-btn">Sign in</button>
+            &nbsp;
+          </div>
+          </div>
+          </nav>
+          <!-- end of top nav-bar -->
+      </header>
+      <div id="body">
+          
+        <div ng-controller="leftNavController as leftNavCtrl" >
+          
+        <div class="col-sm-3 col-md-3" >
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-folder-close">
+                            </span>Employee</a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-pencil text-primary"></span>
+                                        <a ng-click="leftNavCtrl.showComponent('createEmpView')" >Create</a>
+                                        <!-- <a href="http://www.jquery2dotnet.com">Create</a> -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-search text-success"></span>
+                                        <a ng-click="leftNavCtrl.showComponent('home')">Search</a>
+                                    </td>
+                                </tr>
+                          <!--  <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-file text-info"></span><a href="http://www.jquery2dotnet.com">Newsletters</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-comment text-success"></span><a href="http://www.jquery2dotnet.com">Comments</a>
+                                        <span class="badge">42</span>
+                                    </td>
+                                </tr>  -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-th">
+                            </span>Modules</a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Orders</a> <span class="label label-success">$ 320</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Invoices</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Shipments</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Tex</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-user">
+                            </span>Account</a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Change Password</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Notifications</a> <span class="label label-info">5</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Import/Export</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-trash text-danger"></span><a href="http://www.jquery2dotnet.com" class="text-danger">
+                                            Delete Account</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
+                            </span>Reports</a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-usd"></span><a href="http://www.jquery2dotnet.com">Sales</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-user"></span><a href="http://www.jquery2dotnet.com">Customers</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-tasks"></span><a href="http://www.jquery2dotnet.com">Products</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-shopping-cart"></span><a href="http://www.jquery2dotnet.com">Shopping Cart</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div> 
+        </div>
+  <div class="col-sm-9 col-md-9">
+  <!-- new copy-->
+               
 	<div ng-controller="msrsHomeController as c">
 		
 		<div ng-show="c.currentView == 'home'">
 
-      <div class="row">
+      <div>
         <button  class="btn btn-link" ng-click="c.showCreateEmp()">Create Employee</button>
       </div>
 
-			<div class="row">
-			<table class="table ">
+			<div>
+
+			<!--<table class="table ">
 				<tr class="col-sm-8"><td><h4>Search Employee</h4></td></tr>
 				<tr class="col-sm-8"><td>Emp Id</td>	<td><input type="text" ng-model="c.search.empid" /></td>  <td>DOB</td>	<td><input type="text" ng-model="search.dob" /></td></tr>
 				<tr class="col-sm-8"><td>First Name</td>	<td><input type="text" ng-model="c.search.firstname" /></td> <td>Phone</td>	<td><input type="text" ng-model="search.phone" /></td></tr>
 				<tr class="col-sm-8"><td>Last Name</td>	<td><input type="text" ng-model="c.search.lastname" /></td><td>E mail</td>	<td><input type="text" ng-model="search.email" /></td></tr>								
 				<tr class="col-sm-8"> <td><button ng-click="c.myFunction()">Search</button></td></tr>
 			</table>
-            </div>
-			<table class="table table-striped">
+      -->
+
+      <form class="form-horizontal"> <!-- start of search form -->
+      <div ><label class="control-label">Search Employee : </label></div>
+      <div class="form-group">
+      <label class="control-label col-sm-2" for="fName">Emp Id</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" id="fName" ng-model="c.search.empid">
+      </div>
+  
+      <label class="control-label col-sm-2" for="lName">Dob :</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" id="lName" ng-model="c.search.dob">
+      </div>
+    </div>
+
+     <div class="form-group">
+      <label class="control-label col-sm-2" for="fName">First Name</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" id="fName" ng-model="c.search.firstname">
+      </div>
+  
+      <label class="control-label col-sm-2" for="lName">Phone</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" id="lName" ng-model="c.search.phone">
+      </div>
+    </div>
+
+     <div class="form-group">
+      <label class="control-label col-sm-2" for="fName">Last Name</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" id="fName" ng-model="c.search.lastname">
+      </div>
+  
+      <label class="control-label col-sm-2" for="lName">Email</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" id="lName" ng-model="c.search.email">
+      </div>
+    </div>
+
+     <div class="form-group">      
+      <div class="col-sm-4">
+        <button ng-click="c.myFunction()">Search</button>
+      </div>
+  
+    </div>
+
+    </form> <!-- end of search form -->
+
+
+      </div>
+      <div class="col-sm-11">
+			<table class="table table-striped ">
 				<thead>
 					<tr>
 						
@@ -53,22 +311,23 @@
 					</tr>
 					
 				</thead>
-				<tbody style="padding:0px;">
+				<tbody >
 
 					<tr	ng-repeat="emp in c.emps">
 						
-						<td style="padding:0px;">{{ emp.empid}}</td>
-						<td style="padding:0px;">{{ emp.firstname}}</td>
-						<td style="padding:0px;">{{ emp.lastname}}</td>
-						<td style="padding:0px;">{{ emp.dob}}</td>
-						<td style="padding:0px;">{{ emp.phone}}</td>
-						<td style="padding:0px;">{{ emp.email}}</td>
-						<td style="padding:0px;">
+						<td >{{ emp.empid}}</td>
+						<td >{{ emp.firstname}}</td>
+						<td >{{ emp.lastname}}</td>
+						<td >{{ emp.dob}}</td>
+						<td >{{ emp.phone}}</td>
+						<td >{{ emp.email}}</td>
+						<td >
 							<button class="btn btn-default" ng-click="c.findById(emp.empid)">View</button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
+		</div>
 
 		</div> <!-- end of home component -->
 	</div>	 <!-- end of msrsHomeController -->
@@ -165,7 +424,7 @@
       </div>
     </div>
 
-    <div class="row">&nbsp;</div>
+    <!--<div class="row">&nbsp;</div>-->
     
     <!-- div is to show new Incedent form -->
     <div class=" row clearfix" ng-if="empDetails.showAddIncidentForm">
@@ -519,6 +778,32 @@
     </div> <!-- End of create employee -->
    
 	</div> <!-- end of empDetailsController -->
+
+
+           <!-- end of new copy-->
+           
+        </div>
+    </div>
+
+<!--  start of footer -->
+<footer >
+<div class="copyright" >
+    <div class="col-md-6">
+      <p>© 2016 - All Rights with Msrs</p>
+    </div>
+    <div class="col-md-6">
+      <ul class="bottom_ul">
+        <li><a href="#">www.msrsc.com</a></li>
+        <li><a href="#">About us</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Faq's</a></li>
+        <li><a href="#">Contact us</a></li>
+        <li><a href="#">Site Map</a></li>
+      </ul>
+    </div>
+</div>
+</footer>
+<!-- end  of footer -->
 
 </div>
 

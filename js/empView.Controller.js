@@ -35,9 +35,6 @@
 
         });
 
-        
-
-
         /**
          * event listening to showCreateEmp event fired in home controller to 
          * show create emp details
