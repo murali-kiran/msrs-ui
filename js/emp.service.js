@@ -27,6 +27,26 @@
             }); 
             return promise2;
         }
+
+        self.saveNominee = function(nominee) {
+            var promise1 = $http.post("http://localhost:8080/rest/createNominee",nominee);
+            var promise2 = promise1.then(function (response) { 
+                console.log(response.data);
+                return response.data; 
+
+            }); 
+            return promise2;
+        }
+
+        self.saveEmployee =  function(employee) {
+            var promise1 = $http.post("http://localhost:8080/rest/createEmp",employee);
+            var promise2 = promise1.then(function (response) { 
+                console.log(response.data);
+                return response.data; 
+
+            }); 
+            return promise2;
+        } 
     });
 
     _updateEmpResponse = function (emp){

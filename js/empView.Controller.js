@@ -15,7 +15,7 @@
         var _temp = {};
 
         /**
-         * watcing which component is showing in SPA
+         * watcing which component is to show in SPA
          */
         $scope.$watch(function(scope) { return globalInfo.currentViewComponent },
               function(newValue, oldValue) {                 
@@ -35,6 +35,62 @@
 
         });
 
+        
+
+
+        /**
+         * event listening to showCreateEmp event fired in home controller to 
+         * show create emp details
+         */
+        $rootScope.$on('showCreateEmp', function(event) {
+
+           var createEmpModel = {
+                                 aatharnumber:"",
+                                 adress1:"",
+                                 adress2:"",
+                                 createdtime: new Date(),
+                                 district:"",
+                                 dob: new Date(),
+                                 doj: new Date(),
+                                 dor: new Date(),
+                                 email:"",
+                                 firstname:"",
+                                 gender:0,
+                                 lastname:"",
+                                 modifiedtime:new Date(),
+                                 pancard:"",
+                                 phone:"",
+                                 pincode:"",
+                                 state:"",
+                                 nominees:[],
+                                 incidents:[]
+                                };
+
+            self.createEmpModel = createEmpModel;
+        });
+
+
+        /**
+         * Saving emp details
+         */
+        this.saveEmp = function(status){
+
+            if(status == "save"){
+                EmpService.saveEmployee(self.createEmpModel).then(function(response){
+                    console.log(response);
+                    self.saveEmp("cancel");
+                });                
+            }
+            else if(status == "reset"){
+                $rootScope.$emit('showCreateEmp');
+            }
+            else if(status == "cancel"){
+                $rootScope.$emit('showCreateEmp');
+                this.goBack('home');
+            }
+        }
+
+
         /**
          * back to home page from empdetails page
          */
@@ -48,6 +104,7 @@
         this.showIncidentForm = function (status,empId){
             this.showAddIncidentForm = status;
 
+            // status is true to show new incident  form
             if(status){
 
                 var newIncident = 
@@ -72,40 +129,10 @@
 
             _fetchAllOfficeLocationsAndBenefitType();
             }
+            // status is false to cancel new incident form
             else{
                 self.newIncidentModel= {};
             }
-
-    /*
-    {
-      "incidentid": 1,
-      "createdtime": 1486751400000,
-      "details": "head ache",
-      "empid": 1,
-      "firstdayofincident": "2016-12-12",
-      "ishomevisitrequired": 1,
-      "modifiedtime": 1486751400000,
-      "benefitType": {
-        "benefittypeid": 1,
-        "benefittype": "Fever",
-        "createdtime": 1486303194000,
-        "modifiedtime": 1486303194000
-      },
-      "officeLocation1": {
-        "officelocationid": 1,
-        "createdtime": 1486303133000,
-        "modifiedtime": 1486303133000,
-        "officelocation": "mehdipatnam"
-      },
-      "officeLocation2": {
-        "officelocationid": 2,
-        "createdtime": 1486303144000,
-        "modifiedtime": 1486303144000,
-        "officelocation": "hitechcity"
-      }
-    }
-    
-    */
 
     }
 
@@ -117,7 +144,7 @@
             incident.ishomevisitrequired = incident.ishomevisitrequired ? 1 : 0 ;
             incident.createdtime = new Date();
             EmpService.saveIncident(incident).then(function(response){
-                self.showIncidentForm(false);
+            self.showIncidentForm(false);
 
             EmpService.getEmpById(incident.empid).then(function(response){
                 self.currentEmp = response;                                  
